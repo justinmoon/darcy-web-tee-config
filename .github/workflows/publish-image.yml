@@ -1,0 +1,47 @@
+name: Publish reviewed runtime image
+on:
+  workflow_dispatch:
+    inputs:
+      artifact_tag:
+        description: Existing release containing darcy-web-tee.tar.gz
+        required: true
+        type: string
+      sha256:
+        description: Reviewed SHA256 of the image archive
+        required: true
+        type: string
+permissions:
+  contents: read
+  packages: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch and check archive
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          ARTIFACT_TAG: ${{ inputs.artifact_tag }}
+          EXPECTED_SHA256: ${{ inputs.sha256 }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          [[ "$ARTIFACT_TAG" =~ ^image-[a-zA-Z0-9._-]+$ ]]
+          [[ "$EXPECTED_SHA256" =~ ^[a-f0-9]{64}$ ]]
+          gh release download "$ARTIFACT_TAG" --pattern darcy-web-tee.tar.gz
+          printf '%s  darcy-web-tee.tar.gz\n' "$EXPECTED_SHA256" | sha256sum --check --strict
+          docker load --input darcy-web-tee.tar.gz
+      - name: Push image
+        env:
+          REGISTRY_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REGISTRY_USER: ${{ github.actor }}
+          IMAGE_REPO: ghcr.io/${{ github.repository }}
+          ARTIFACT_TAG: ${{ inputs.artifact_tag }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          trap 'docker logout ghcr.io >/dev/null 2>&1 || true' EXIT
+          printf '%s' "$REGISTRY_TOKEN" | docker login ghcr.io --username "$REGISTRY_USER" --password-stdin
+          docker tag darcy-web-tee:mvp "$IMAGE_REPO:$ARTIFACT_TAG"
+          docker push "$IMAGE_REPO:$ARTIFACT_TAG"
+          docker inspect --format '{{json .RepoDigests}}' "$IMAGE_REPO:$ARTIFACT_TAG"
