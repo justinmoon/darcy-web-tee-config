@@ -1,0 +1,37 @@
+cvm-version: 0.14.16
+cpus: 2
+memory: 8192
+
+networks:
+  agent:
+    egress: open
+
+volumes:
+  - name: workspace
+    owner: "0:0"
+    exec: true
+
+containers:
+  - name: agent
+    image: ghcr.io/justinmoon/darcy-web-tee-config@sha256:4cb1bdbe818f1e997c922a772fccbed4399d4e928b88c91575a742f432dad120
+    cvm_admin: true
+    read_only: true
+    pids_limit: 128
+    networks: [agent]
+    persistent_volumes: [workspace:/workspace]
+    env:
+      - DARCY_OWNER_TOKEN_SHA256: "4a5672f59aa15c2cb23fddf9033eaae6a2a902fcf1149640fc27c9fd818a45ad"
+      - DARCY_WEB_ORIGIN: "https://justinmoon.github.io"
+      - DARCY_INFERENCE_RELEASE_SHA256: "5233a27f1468f474d27c103e06c1a7a607e6a722ff4f9299ddf4e32fa87f201e"
+      - DARCY_INITIALIZE_NEW_VOLUME: "1"
+    secrets: [TINFOIL_API_KEY]
+    tmpfs:
+      /config: rw,nosuid,nodev,size=64m,mode=755
+      /tmp: rw,nosuid,nodev,size=1g,mode=1777
+      /run: rw,nosuid,nodev,size=64m,mode=755
+
+shim:
+  upstream-port: 8080
+  authenticated: false
+  paths: [/api, /healthz]
+  origins: [https://justinmoon.github.io]
