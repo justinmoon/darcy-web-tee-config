@@ -20,7 +20,7 @@ containers:
     networks: [agent]
     persistent_volumes: [workspace:/workspace]
     env:
-      - DARCY_OWNER_TOKEN_SHA256: "4a5672f59aa15c2cb23fddf9033eaae6a2a902fcf1149640fc27c9fd818a45ad"
+      - DARCY_OWNER_TOKEN_SHA256: "0000000000000000000000000000000000000000000000000000000000000000"
       - DARCY_WEB_ORIGIN: "https://justinmoon.github.io"
       - DARCY_INFERENCE_RELEASE_SHA256: "5233a27f1468f474d27c103e06c1a7a607e6a722ff4f9299ddf4e32fa87f201e"
       - DARCY_INITIALIZE_NEW_VOLUME: "0"
