@@ -13,7 +13,7 @@ volumes:
 
 containers:
   - name: agent
-    image: ghcr.io/justinmoon/darcy-web-tee-config@sha256:609fd393053bc15b1b1e82dc6c0da68f221e6ffda1eeac699bf7acae91876a25
+    image: ghcr.io/justinmoon/darcy-web-tee-config@sha256:75f173f9edd5fab54eaf7d3957507eb23e719c01cc6cf3b5ea890e2d4fbbf5c1
     cvm_admin: true
     read_only: true
     pids_limit: 128
