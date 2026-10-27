@@ -13,7 +13,7 @@ volumes:
 
 containers:
   - name: agent
-    image: ghcr.io/justinmoon/darcy-web-tee-config@sha256:4cb1bdbe818f1e997c922a772fccbed4399d4e928b88c91575a742f432dad120
+    image: ghcr.io/justinmoon/darcy-web-tee-config@sha256:609fd393053bc15b1b1e82dc6c0da68f221e6ffda1eeac699bf7acae91876a25
     cvm_admin: true
     read_only: true
     pids_limit: 128
@@ -23,7 +23,9 @@ containers:
       - DARCY_OWNER_TOKEN_SHA256: "4a5672f59aa15c2cb23fddf9033eaae6a2a902fcf1149640fc27c9fd818a45ad"
       - DARCY_WEB_ORIGIN: "https://justinmoon.github.io"
       - DARCY_INFERENCE_RELEASE_SHA256: "5233a27f1468f474d27c103e06c1a7a607e6a722ff4f9299ddf4e32fa87f201e"
-      - DARCY_INITIALIZE_NEW_VOLUME: "1"
+      - DARCY_INITIALIZE_NEW_VOLUME: "0"
+      - DARCY_WEB_EPHEMERAL_DEV: "0"
+      - DARCY_MARMOT_ENABLED: "0"
     secrets: [TINFOIL_API_KEY]
     tmpfs:
       /config: rw,nosuid,nodev,size=64m,mode=755
