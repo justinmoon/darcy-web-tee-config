@@ -25,7 +25,7 @@ containers:
       - DARCY_INFERENCE_RELEASE_SHA256: "5233a27f1468f474d27c103e06c1a7a607e6a722ff4f9299ddf4e32fa87f201e"
       - DARCY_INITIALIZE_NEW_VOLUME: "0"
       - DARCY_WEB_EPHEMERAL_DEV: "0"
-      - DARCY_MARMOT_ENABLED: "0"
+      - DARCY_MARMOT_ENABLED: "1"
     secrets: [TINFOIL_API_KEY]
     tmpfs:
       /config: rw,nosuid,nodev,size=64m,mode=755
