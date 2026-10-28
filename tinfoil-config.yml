@@ -1,26 +1,27 @@
+# Fill the approved runtime image digest, inference pin and CVM version before
+# release. core-admin verifies the published config against the reviewed copy.
 cvm-version: 0.14.16
 cpus: 2
 memory: 8192
-
 networks:
   agent:
     egress: open
-
 volumes:
   - name: workspace
     owner: "0:0"
     exec: true
-
 containers:
   - name: agent
-    image: ghcr.io/justinmoon/darcy-web-tee-config@sha256:96d9c90113d03b06ca6886c3d66853fb67924de2082759b38b7415ee37cc77f0
+    image: ghcr.io/justinmoon/darcy-web-tee-config@sha256:facda42a04fa237d8f41974d5eeb6e19a048c232b963445b28ea764770cfb72c
     cvm_admin: true
     read_only: true
     pids_limit: 128
     networks: [agent]
     persistent_volumes: [workspace:/workspace]
     env:
-      - DARCY_INVITE_CODE_SHA256: "97df5311068c3bb8a228532cdca8529e0f764a1ace00eabc6fc241b98f0b038c"
+      - RAPTURE_REQUIRE_ACCOUNTING: "1"
+      - RAPTURE_SUPERVISOR_TOKEN
+      - DARCY_INVITE_CODE_SHA256
       - DARCY_WEB_ORIGIN: "https://app.rapture.gg"
       - DARCY_INFERENCE_RELEASE_SHA256: "5233a27f1468f474d27c103e06c1a7a607e6a722ff4f9299ddf4e32fa87f201e"
       - DARCY_INITIALIZE_NEW_VOLUME: "1"
@@ -31,7 +32,6 @@ containers:
       /config: rw,nosuid,nodev,size=64m,mode=755
       /tmp: rw,nosuid,nodev,size=1g,mode=1777
       /run: rw,nosuid,nodev,size=64m,mode=755
-
 shim:
   upstream-port: 8080
   authenticated: false
