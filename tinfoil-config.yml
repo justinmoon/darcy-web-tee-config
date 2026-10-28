@@ -20,8 +20,8 @@ containers:
     networks: [agent]
     persistent_volumes: [workspace:/workspace]
     env:
-      - DARCY_INVITE_CODE_SHA256: "5ec62c9eebc683c4f256205ae721a549aec61e6788dde26a1a115a49b3b0d4ab"
-      - DARCY_WEB_ORIGIN: "https://justinmoon.github.io"
+      - DARCY_INVITE_CODE_SHA256: "97df5311068c3bb8a228532cdca8529e0f764a1ace00eabc6fc241b98f0b038c"
+      - DARCY_WEB_ORIGIN: "https://app.rapture.gg"
       - DARCY_INFERENCE_RELEASE_SHA256: "5233a27f1468f474d27c103e06c1a7a607e6a722ff4f9299ddf4e32fa87f201e"
       - DARCY_INITIALIZE_NEW_VOLUME: "1"
       - DARCY_WEB_EPHEMERAL_DEV: "0"
@@ -36,4 +36,4 @@ shim:
   upstream-port: 8080
   authenticated: false
   paths: [/api, /healthz]
-  origins: [https://justinmoon.github.io]
+  origins: [https://app.rapture.gg]
